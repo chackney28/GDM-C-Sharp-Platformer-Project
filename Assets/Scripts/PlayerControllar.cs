@@ -4,11 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControllar : MonoBehaviour
 {
-    //Sets the player pref to 0
-    void Start()
-    {
-        PlayerPrefs.SetInt("Score", 0);
-    }
     //Variables to allow for customization of speed during testing
     [SerializeField] protected internal float xSpeed = 0.25f;
     [SerializeField] protected internal float ySpeed = 10f;
@@ -16,16 +11,9 @@ public class PlayerControllar : MonoBehaviour
     protected bool isGrounded = false;
     protected int health = 100;
     protected int iFrames = 0;
-    //Text boxes during the main scene
-    public TextMeshProUGUI hpTextBox;
-    public TextMeshProUGUI scoreTextBox;
 
     // Update is called once per frame
-    void Update(){
-        //Updates Health and Score
-        hpTextBox.text = "Hp: " + health;
-        scoreTextBox.text = "Score: " + PlayerPrefs.GetInt("Score", 0);
-        
+    void Update(){ 
         //Reduces I-Frames (doesn't work, or works very poorly with current implamentation)
         if (iFrames > 0){
             iFrames--;
@@ -54,6 +42,7 @@ public class PlayerControllar : MonoBehaviour
         }
     }
     
+    //Checks to see if the player is grounded
     void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
@@ -67,7 +56,8 @@ public class PlayerControllar : MonoBehaviour
         //Increases score and destroys coin
         if (other.CompareTag("Coin"))
         {
-            PlayerPrefs.SetInt("Score", PlayerPrefs.GetInt("Score", 0) + 1);
+            //Calls for the GameManager to change the points given
+            GameManager.Instance.changePoints(1);
             Destroy(other.gameObject);
         }
 
@@ -75,17 +65,15 @@ public class PlayerControllar : MonoBehaviour
         if (other.CompareTag("Enemy"))
         {
             if (iFrames == 0){
-                takeDamage(10);
+                takeDamage(-10);
             }
         }
     }
 
+    //A function based around taking damage
     void takeDamage(int damage){
-        health -= damage;
-        if (health <= 0){
-            health = 0;
-            SceneManager.LoadScene("GameOver");
-        }
+        //Calls the GameManager to do the damage
+        GameManager.Instance.changeHp(damage);
         iFrames = 180;
     }
 }

@@ -7,6 +7,6 @@ public class AutoText : MonoBehaviour
     public TextMeshProUGUI scoreTextBox;
     void Start()
     {
-        scoreTextBox.text = "Score: " + PlayerPrefs.GetInt("Score", 0);
+        scoreTextBox.text = "Score: " + GameManager.Instance.playerScore;
     }
 }

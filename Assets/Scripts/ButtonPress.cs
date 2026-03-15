@@ -12,8 +12,10 @@ public class ButtonPress : MonoBehaviour
 		butn.onClick.AddListener(TaskOnClick);
     }
 
-    //Goes to the first real level
+    //Goes to the first real level, resets things back to the basics incase of using the reset button
     public void TaskOnClick(){
        SceneManager.LoadScene("Debug_FirstLevel");
+       GameManager.Instance.playerHp = 100;
+       GameManager.Instance.playerScore = 0;
 	}
 }
