@@ -14,8 +14,9 @@ public class ButtonPress : MonoBehaviour
 
     //Goes to the first real level, resets things back to the basics incase of using the reset button
     public void TaskOnClick(){
-       SceneManager.LoadScene("Debug_FirstLevel");
-       GameManager.Instance.playerHp = 100;
-       GameManager.Instance.playerScore = 0;
+        if (CoinPoolManager.Instance != null){ CoinPoolManager.Instance.ResetAllCoins(); }
+        SceneManager.LoadScene("Debug_FirstLevel");
+        GameManager.Instance.playerHp = 100;
+        GameManager.Instance.playerScore = 0;
 	}
 }

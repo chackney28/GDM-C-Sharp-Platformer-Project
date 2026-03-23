@@ -28,6 +28,7 @@ public class PlayerControllar : MonoBehaviour
         if (horz < -0.15f) horz = -0.15f;
         if (Input.GetButtonDown("Jump") && isGrounded){
             vert = ySpeed;
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.jumpSound);
         }
 
         rb.linearVelocity += new Vector2(xSpeed * horz, vert);
@@ -58,7 +59,8 @@ public class PlayerControllar : MonoBehaviour
         {
             //Calls for the GameManager to change the points given
             GameManager.Instance.changePoints(1);
-            Destroy(other.gameObject);
+            AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.coinSound);
+            CoinPoolManager.Instance.ReturnCoin(other.gameObject);
         }
 
         //Take damage
@@ -74,6 +76,7 @@ public class PlayerControllar : MonoBehaviour
     void takeDamage(int damage){
         //Calls the GameManager to do the damage
         GameManager.Instance.changeHp(damage);
+        AudioManager.Instance.PlaySoundEffect(AudioManager.Instance.damageSound);
         iFrames = 180;
     }
 }
